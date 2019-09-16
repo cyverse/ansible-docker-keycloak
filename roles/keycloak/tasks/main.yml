@@ -1,0 +1,37 @@
+---
+- name: install pip
+  apt:
+    name: python-pip
+    update_cache: yes
+
+- name: update pip to latest
+  pip:
+    name: pip
+    state: latest
+
+- name: install docker-py
+  pip:
+    name: docker-py
+    state: latest
+
+- name: pull the keycloak image
+  docker_image:
+    name: "{{ KEYCLOAK_DOCKER_IMAGE }}:{{ KEYCLOAK_DOCKER_IMAGE_TAG }}"
+    #source: pull
+    pull: yes
+
+- name: verify that the KEYCLOAK_DIST_DIR exists
+  file:
+    path: "{{ KEYCLOAK_DIST_DIR }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: copy the docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/keycloak/docker-compose.yml
+    owner: root
+    group: root
+    mode: 0644

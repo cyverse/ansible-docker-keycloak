@@ -1,0 +1,7 @@
+KEYCLOAK_DB_NAME: "keycloak"
+KEYCLOAK_DB_USER: "keycloak"
+KEYCLOAK_DB_PASS: "somepass"
+KEYCLOAK_DB_HOST: "db.example.com"
+
+# this is used to setup the pg_hba.conf
+#KEYCLOAK_APP_CIDR: "w.x.y.z"

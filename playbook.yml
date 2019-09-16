@@ -1,0 +1,5 @@
+- hosts: keycloakhosts
+  roles:
+    - keycloak
+  tags:
+    - app

@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  keycloak:
+    image: {{ KEYCLOAK_DOCKER_IMAGE }}:{{ KEYCLOAK_DOCKER_IMAGE_TAG }}
+    environment:
+      - KEYCLOAK_HOSTNAME={{ KEYCLOAK_EXTERNAL_HOSTNAME }}
+      - KEYCLOAK_USER={{ KEYCLOAK_ADMIN_USER }}
+      - KEYCLOAK_PASSWORD={{ KEYCLOAK_ADMIN_PASS }}
+      - DB_VENDOR={{ KEYCLOAK_DB_VENDOR }}
+      - DB_ADDR={{ KEYCLOAK_DB_HOST }}
+      - DB_PORT={{ KEYCLOAK_DB_PORT }}
+      - DB_USER={{ KEYCLOAK_DB_USER }}
+      - DB_PASSWORD={{ KEYCLOAK_DB_PASS }}
+      - PROXY_ADDRESS_FORWARDING=true
+    ports:
+      - "8080:8080"
