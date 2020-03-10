@@ -2,6 +2,7 @@ version: "3.7"
 services:
   keycloak:
     image: {{ KEYCLOAK_DOCKER_IMAGE }}:{{ KEYCLOAK_DOCKER_IMAGE_TAG }}
+    container_name: keycloak
     environment:
       - KEYCLOAK_USER={{ KEYCLOAK_ADMIN_USER }}
       - KEYCLOAK_PASSWORD={{ KEYCLOAK_ADMIN_PASS }}
