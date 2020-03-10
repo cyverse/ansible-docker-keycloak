@@ -1,0 +1,20 @@
+- name: (dev only) wait for OK status from container via port 8080
+  wait_for:
+    port: 8080
+    delay: 5
+
+- name: (dev only) set standalone.xml filepath
+  set_fact:
+    filepath: "/opt/jboss/keycloak/standalone/configuration/standalone.xml"
+
+- name: (dev only) disable staticMaxAge
+  command: docker exec -it keycloak sed -i -E "s%(<staticMaxAge>)(.*)(<\/staticMaxAge>)%<staticMaxAge>-1</staticMaxAge>%g" {{ filepath }}
+
+- name: (dev only) disable cacheThemes
+  command: docker exec -it keycloak sed -i -E "s%(<cacheThemes>)(.*)(<\/cacheThemes>)%<cacheThemes>false</cacheThemes>%g" {{ filepath }}
+
+- name: (dev only) disable cacheTemplates
+  command: docker exec -it keycloak sed -i -E "s%(<cacheTemplates>)(.*)(<\/cacheTemplates>)%<cacheTemplates>false</cacheTemplates>%g" {{ filepath }}
+
+- name: (dev only) disable ssl for container on remote host
+  command: docker exec -it keycloak bash -c '/opt/jboss/keycloak/bin/kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user {{ KEYCLOAK_ADMIN_USER }} --password {{ KEYCLOAK_ADMIN_PASS }} && /opt/jboss/keycloak/bin/kcadm.sh update realms/master -s sslRequired=NONE'
