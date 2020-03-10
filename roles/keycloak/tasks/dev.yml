@@ -1,3 +1,4 @@
+---
 - name: (dev only) wait for OK status from container via port 8080
   wait_for:
     port: 8080
