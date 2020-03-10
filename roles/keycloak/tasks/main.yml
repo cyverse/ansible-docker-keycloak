@@ -35,3 +35,11 @@
     owner: root
     group: root
     mode: 0644
+
+- name: copy the docker-compose dev file
+  template:
+    src: docker-compose.dev.yml.j2
+    dest: /opt/keycloak/docker-compose.dev.yml
+    owner: root
+    group: root
+    mode: 0644

@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  keycloak:
+    image: {{ KEYCLOAK_DOCKER_IMAGE }}:{{ KEYCLOAK_DOCKER_IMAGE_TAG }}
+    environment:
+      - KEYCLOAK_USER={{ KEYCLOAK_ADMIN_USER }}
+      - KEYCLOAK_PASSWORD={{ KEYCLOAK_ADMIN_PASS }}
+      - DB_VENDOR=H2
+    ports:
+      - "8080:8080"
+    volumes:
+      - '/opt/keycloak/customTheme:/opt/jboss/keycloak/themes/customTheme'
