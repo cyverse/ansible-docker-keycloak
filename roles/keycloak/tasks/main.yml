@@ -3,22 +3,26 @@
   apt:
     name: python-pip
     update_cache: yes
+  tags: [always]
 
 - name: update pip to latest
   pip:
     name: pip
     state: latest
+  tags: [always]
 
 - name: install docker-py
   pip:
     name: docker-py
     state: latest
+  tags: [always]
 
 - name: pull the keycloak image
   docker_image:
     name: "{{ KEYCLOAK_DOCKER_IMAGE }}:{{ KEYCLOAK_DOCKER_IMAGE_TAG }}"
     #source: pull
     pull: yes
+  tags: [always]
 
 - name: verify that the KEYCLOAK_DIST_DIR exists
   file:
@@ -27,6 +31,7 @@
     owner: root
     group: root
     mode: 0755
+  tags: [always]
 
 - name: copy the docker-compose file
   template:
@@ -35,3 +40,20 @@
     owner: root
     group: root
     mode: 0644
+  tags: [always]
+
+- name: (dev only) copy the docker-compose dev file
+  template:
+    src: docker-compose.dev.yml.j2
+    dest: /opt/keycloak/docker-compose.yml
+    owner: root
+    group: root
+    mode: 0644
+  tags: [never, dev]
+
+- name: spin up containers
+  command: docker-compose -f /opt/keycloak/docker-compose.yml up -d
+  tags: [always]
+
+- import_tasks: dev.yml
+  tags: [never, dev]
