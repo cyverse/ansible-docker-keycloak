@@ -14,6 +14,6 @@ services:
       - DB_PASSWORD={{ KEYCLOAK_DB_PASS }}
       - PROXY_ADDRESS_FORWARDING=true
       - JDBC_PARAMS="connectTimeout=21600"
-      - JAVA_OPTS=-server -Xms4096m -Xmx8192m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
+      - JAVA_OPTS=-server -Xms4096m -Xmx8192m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Dkeycloak.profile.feature.token_exchange=enabled
     ports:
       - "8080:8080"
