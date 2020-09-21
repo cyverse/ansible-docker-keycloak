@@ -11,9 +11,15 @@
     state: latest
   tags: [always]
 
-- name: install docker-py
+- name: install docker python module
   pip:
-    name: docker-py
+    name: docker
+    state: latest
+  tags: [always]
+
+- name: install docker-compose python module
+  pip:
+    name: docker-compose
     state: latest
   tags: [always]
 
@@ -22,6 +28,18 @@
     name: "{{ KEYCLOAK_DOCKER_IMAGE }}:{{ KEYCLOAK_DOCKER_IMAGE_TAG }}"
     #source: pull
     pull: yes
+  tags: [always]
+
+- name: get stat information on the docker-compose file
+  stat:
+    path: "{{ KEYCLOAK_DIST_DIR }}/docker-compose.yml"
+  register: dc_st
+
+- name: ensure that the existing deployment is not running if applicable
+  docker_compose:
+    project_src: "{{ KEYCLOAK_DIST_DIR }}"
+    state: absent
+  when: dc_st.stat.isreg is defined and dc_st.stat.isreg
   tags: [always]
 
 - name: verify that the KEYCLOAK_DIST_DIR exists
@@ -36,7 +54,7 @@
 - name: copy the docker-compose file
   template:
     src: docker-compose.yml.j2
-    dest: /opt/keycloak/docker-compose.yml
+    dest: "{{ KEYCLOAK_DIST_DIR }}/docker-compose.yml"
     owner: root
     group: root
     mode: 0644
@@ -45,14 +63,16 @@
 - name: (dev only) copy the docker-compose dev file
   template:
     src: docker-compose.dev.yml.j2
-    dest: /opt/keycloak/docker-compose.yml
+    dest: "{{ KEYCLOAK_DIST_DIR }}/docker-compose.yml"
     owner: root
     group: root
     mode: 0644
   tags: [never, dev]
 
 - name: spin up containers
-  command: docker-compose -f /opt/keycloak/docker-compose.yml up -d
+  docker_compose:
+    project_src: "{{ KEYCLOAK_DIST_DIR }}"
+    state: present
   tags: [always]
 
 - import_tasks: dev.yml
