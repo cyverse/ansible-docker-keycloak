@@ -1,15 +1,15 @@
 KEYCLOAK_EXTERNAL_HOSTNAME: "keycloak.example.org"
 KEYCLOAK_DOCKER_IMAGE: "jboss/keycloak"
 KEYCLOAK_DOCKER_IMAGE_TAG: "10.0.2"
-KEYCLOAK_RESTART_POLICY_CONDITION: "none"
 
 KEYCLOAK_ADMIN_USER: "cyverse_admin"
 KEYCLOAK_ADMIN_PASS: "somepass"
 
-KEYCLOAK_DB_NAME: "keycloak"
 KEYCLOAK_DB_USER: "keycloak"
 KEYCLOAK_DB_PASS: "somepass"
 KEYCLOAK_DB_HOST: "db.example.com"
+
+KEYCLOAK_CUSTOM_THEMES: []
 
 # this is used to setup the pg_hba.conf
 #KEYCLOAK_APP_CIDR: "w.x.y.z"

@@ -9,5 +9,9 @@ services:
       - DB_VENDOR=H2
     ports:
       - "8080:8080"
+{% if KEYCLOAK_CUSTOM_THEMES %}
     volumes:
-      - '/opt/keycloak/customTheme:/opt/jboss/keycloak/themes/customTheme'
+{% for theme in KEYCLOAK_CUSTOM_THEMES %}
+      - "./themes/{{ theme }}:/opt/jboss/keycloak/themes/{{ theme }}:ro"
+{% endfor %}
+{% endif %}

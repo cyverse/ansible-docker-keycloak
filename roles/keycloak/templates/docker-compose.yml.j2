@@ -17,3 +17,9 @@ services:
       - JAVA_OPTS=-server -Xms4096m -Xmx8192m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Dkeycloak.profile.feature.token_exchange=enabled
     ports:
       - "8080:8080"
+{% if KEYCLOAK_CUSTOM_THEMES %}
+    volumes:
+{% for theme in KEYCLOAK_CUSTOM_THEMES %}
+      - "./themes/{{ theme }}:/opt/jboss/keycloak/themes/{{ theme }}:ro"
+{% endfor %}
+{% endif %}
